@@ -11,6 +11,15 @@ public class Block : MonoBehaviour
     public Vector2Int shuffledCoord;
     Vector2Int startingCoord;
 
+    public void BlockCopy(Block dale)
+    {
+        this.coord = dale.coord;
+        this.shuffledCoord = dale.shuffledCoord;
+        this.startingCoord = dale.startingCoord;
+        this.OnBlockPressed = dale.OnBlockPressed;
+        this.OnFinishedMoving = dale.OnFinishedMoving;
+    }
+
     public void Init(Vector2Int startingCoord, Texture2D image)
     {
         this.startingCoord = startingCoord;

@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Puzzle : MonoBehaviour
 {
     public Texture2D image;
+    public Texture2D fullProgressBar;
+    public Texture2D emptyProgressBar;
     public int blocksPerLine = 4;
     public int shuffleLenght = 20;
     public float defaultMoveDuration = .125f;
@@ -16,26 +19,21 @@ public class Puzzle : MonoBehaviour
     bool blockIsMoving;
     int shuffleMovesRemaining;
     Vector2Int previousShuffleOffset;
+    public GameObject loadingScreen;
+    public GameObject helpScreen;
+    public GameObject puzzle;
+    public GameObject levelCompleted;
+
+    private float progressbar=0;
+    private float actualProgress=0;
 
     enum PuzzleState { Solved, Shuffling, InPlay};
     PuzzleState state;
 
-    private void Start()
-    {
-        
-
-        for (int i = 0; i < blocksPerLine; i++)
-        {
-            for (int j = 0; j < blocksPerLine; j++)
-            {
-                blocks[i, j].shuffledCoord = blocks[i, j].coord;
-            }
-        }
-        emptyBlock.shuffledCoord = emptyBlock.coord;
-    }
 
     private void Awake()
     {
+        loadingScreen.SetActive(true);
         CreatePuzzle();
         StartShuffle();
         
@@ -43,9 +41,32 @@ public class Puzzle : MonoBehaviour
 
     void Update()
     {
+        if (state == PuzzleState.Solved)
+        {
+            levelCompleted.SetActive(true);
+        }
         if (state == PuzzleState.Solved && Input.GetKeyDown(KeyCode.Space))
         {
             StartShuffle();
+        }
+       
+    }
+
+    void OnGUI() {
+        if (shuffleMovesRemaining > 1)
+        {
+            
+            loadingScreen.SetActive(true);
+            actualProgress = progressbar / (float)shuffleLenght;
+            GUI.DrawTexture(new Rect(0, Screen.height/2, Screen.width, 50), emptyProgressBar);
+            GUI.DrawTexture(new Rect(0, Screen.height/2, actualProgress * Screen.width, 50), fullProgressBar);
+            GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+            GUI.Label(new Rect(0, 0, 100, 50), string.Format("{0:N0}%",actualProgress * 100f));
+
+        }
+        else
+        {
+            loadingScreen.SetActive(false);
         }
     }
 
@@ -148,14 +169,18 @@ public class Puzzle : MonoBehaviour
 
     public void ResetLevel()
     {
-        Debug.Log("reseting...........");
-        for (int i = 0; i < blocksPerLine; i++)
+        
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+        
+    }
+
+    public void HelpDisable()
+    {
+        helpScreen.SetActive(false);
+        foreach (Block bloc in blocks)
         {
-            for (int j = 0; j < blocksPerLine; j++)
-            {
-                Vector2 blabla = blocks[i, j].shuffledCoord;
-                blocks[i, j].transform.position = blabla;
-            }
+            bloc.gameObject.GetComponent<MeshCollider>().enabled = true;
         }
     }
 
@@ -175,12 +200,25 @@ public class Puzzle : MonoBehaviour
                 {
                     MoveBlock(blocks[moveBlockCoord.x, moveBlockCoord.y], shuffleMoveDuration);
                     shuffleMovesRemaining--;
+                    progressbar++;
                     previousShuffleOffset = offset;
                     break;
                 }
             }
         }
 
+    }
+
+    public void HelpEnable()
+    {
+        if (!(state == PuzzleState.Solved))
+        {
+            helpScreen.SetActive(true);
+            foreach(Block bloc in blocks)
+            {
+                bloc.gameObject.GetComponent<MeshCollider>().enabled = false;
+            }
+        }
     }
 
     void CheckIfSolved()
