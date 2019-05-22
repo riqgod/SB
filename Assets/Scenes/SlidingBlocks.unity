@@ -1058,7 +1058,7 @@ MonoBehaviour:
   image: {fileID: 2800000, guid: d2e07787c41825e4d865c2595ea29b4b, type: 3}
   fullProgressBar: {fileID: 2800000, guid: 905a48c05ab375a40a60a8513ecdfb09, type: 3}
   emptyProgressBar: {fileID: 2800000, guid: 659c6c957d4ec354594ad57840c08034, type: 3}
-  blocksPerLine: 4
+  blocksPerLine: 3
   shuffleLenght: 100
   defaultMoveDuration: 0.125
   shuffleMoveDuration: 0
