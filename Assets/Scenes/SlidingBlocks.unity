@@ -1055,7 +1055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49be4c1c1c508e14e85616d377615142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 2800000, guid: d2e07787c41825e4d865c2595ea29b4b, type: 3}
+  image: {fileID: 2800000, guid: 959f536bd1f48d04b97572618dfc40f7, type: 3}
   fullProgressBar: {fileID: 2800000, guid: 905a48c05ab375a40a60a8513ecdfb09, type: 3}
   emptyProgressBar: {fileID: 2800000, guid: 659c6c957d4ec354594ad57840c08034, type: 3}
   blocksPerLine: 3
