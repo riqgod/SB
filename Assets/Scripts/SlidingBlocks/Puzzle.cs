@@ -23,6 +23,7 @@ public class Puzzle : MonoBehaviour
     public GameObject helpScreen;
     public GameObject puzzle;
     public GameObject levelCompleted;
+    public Camera cam;
 
     private float progressbar=0;
     private float actualProgress=0;
@@ -33,10 +34,12 @@ public class Puzzle : MonoBehaviour
 
     private void Awake()
     {
+
         loadingScreen.SetActive(true);
         CreatePuzzle();
         StartShuffle();
-        
+        cam.orthographicSize = 3;
+
     }
 
     void Update()
