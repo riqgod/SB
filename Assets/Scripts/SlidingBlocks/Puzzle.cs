@@ -38,7 +38,7 @@ public class Puzzle : MonoBehaviour
         loadingScreen.SetActive(true);
         CreatePuzzle();
         StartShuffle();
-        cam.orthographicSize = 3;
+        //cam.orthographicSize = 3;
 
     }
 
